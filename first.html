@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text" placeholder="Debouncer" style="text-align: center;" onchange="getting()" />
+    <button id="throttle" onclick="newFunc()">Throttle</button>
+</body>
+
+</html>
+<script>
+    "use strict";
+
+    // DEBOUNCING
+    var count = 0;
+
+    function debouncer() {
+        console.log("Debouncing : " + count++);
+    }
+
+    function debouncing(call, d) {
+        var timer;
+        return function (...args) {
+            if (timer) clearTimeout(timer);
+            setTimeout(() => {
+                call();
+            }, d)
+        }
+    }
+
+    const getting = debouncing(debouncer, 3000);
+
+
+    // THROTTLE
+    function throttle(func, d) {
+        return function (...args) {
+            document.getElementById("throttle").disabled = true;
+            setTimeout(() => {
+                func();
+            }, d)
+        }
+    }
+
+    const newFunc = throttle(() => {
+        document.getElementById("throttle").disabled = false;
+        console.log("Throttle");
+    }, 5000);
+
+
+    // JS PREP INTERVIEW - 1
+    console.log(undefined == null) // true
+    console.log(undefined === null) // false
+    console.log(NaN == NaN) // false
+    console.log([] == []) // false
+    console.log({} == {}) // false
+
+    // PRECEDENCE
+    console.log(5 && 2 && 0 || 2 && 3 || 15 && 21) // 3
+    console.log(5 && 2 && 0 || 2 == 3 || 15 && 21) // 21
+    console.log(5 && 2 && 0 || 2 == 3) // false
+
+    function test(a, b) {
+        console.log(arguments.length);
+    }
+    test(1, 1); // 2
+    test(1, 2, 3); // 3
+
+    // HIGHER ORDER FUNCTIONS
+    var arr = [1, 2, 3, 4, 5];
+
+    let a = arr.map((i) => i * 2)
+    console.log(a);
+
+    let filter = arr.filter((f) => f % 2 !== 0);
+    console.log(filter);
+
+    // DECLARATIONS OF ARRAY
+    var array = [];
+    console.log(array);
+
+    var newArr = new Array(5).fill(5);
+    console.log(newArr);
+
+    console.log(typeof [] === typeof {}); // true
+
+    // TRANSPOSE AN ARRAY N*M TO M*N
+    var matrix = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ];
+    let transposed = [];
+    for (let i = 0; i < matrix.length; i++) {
+        let bag = [];
+        for (let j = 0; j < matrix.length; j++) {
+            bag.push(matrix[j][i]);
+        }
+        transposed.push(bag);
+    }
+    console.log(transposed);
+
+    // IMPORTANT
+    var x = 100;
+    function tests() {
+        var i = 10;
+        x = i;
+        console.log(x, i);
+    }
+    tests();
+
+    const name = [1, 2, 3, 4];
+    name[1] = 26;
+    console.log(name);
+
+    // Constructor Function
+    function Names(name, sirname) {
+        this.firstName = name;
+        this.lastName = sirname;
+    }
+
+    const first = new Names("sorav", "malviya");
+    first.age = 21;
+    console.log(first);
+
+    // Reduce (HOF)
+    const arrr = [1, 2, 3, 4, 5];
+
+    console.log(arrr.reduce((acc, curr) => {
+        acc = acc + curr
+        return acc
+    }, 0));
+
+
+    // VAR 
+    var check;
+    console.log(check); // Undefined
+
+    console.log(check1); // Undefined
+    var check1;
+
+    console.log(check2); // Undefined
+    var check2 = null;
+
+    var check3 = null;
+    console.log(check3); // Null
+
+
+    // LET
+    let check4;
+    console.log(check4); // Undefined
+
+    // console.log(check5); // Cannot access 'check5' before initialization 
+    let check5;
+
+    console.log(check6); // Undefined
+    var check6 = "sorav"; // OR null (Same Output)
+
+    let check7 = null;
+    console.log(check7); // Null
+
+
+    // CONST
+    // const check8;
+    // console.log(check8); // Missing initializer in const declaration
+
+    // console.log(check9); // Missing initializer in const declaration
+    // const check9;
+
+    // console.log(check10); //  Cannot access 'check10' before initialization
+    // const check10 = null;
+
+    const check11 = null;
+    console.log(check11); // Null
+
+    // console.log(check12); //  Cannot access 'check12' before initialization
+    // const check12 = "sorav";
+
+
+    // FUNCTIONS SCOPE
+    namee(); // Sorav
+    function namee() {
+        console.log("Sorav");
+    }
+    namee(); // Sorav
+
+    console.log(age()); // 21
+    function age() {
+        return (21);
+    }
+    console.log(age()); // 21
+
+    // sirname(); // Cannot access 'sirname' before initialization
+    const sirname = () => {
+        console.log("Malviya");
+    }
+    sirname(); // Malviya
+
+    // console.log(city()); // Cannot access 'sirname' before initialization
+    const city = () => {
+        return ("Delhi");
+    }
+    console.log(city()); // Malviya
+
+
+    // Call, Apply, Bind
+    function Person(name, lastName, age) {
+        this.firstname = name;
+        this.lastname = lastName;
+        this.age = age;
+
+    }
+
+
+    function greet(welcome) {
+        console.log(`Hello, ${this.firstname} ${this.lastname}, ${welcome}`);
+    }
+
+    function Employee(name, lastName, department) {
+        this.firstname = name;
+        this.lastname = lastName;
+        this.department = department;
+
+    }
+
+    const newPerson = new Person("Sorav", "Malviya", 21);
+    console.log(newPerson);
+    greet.call(newPerson, "Call");
+    const op = greet.bind(newPerson);
+    op("Bind");
+
+    const employee = new Employee("Ankush", "Rathore", "Chat Support")
+    console.log(employee);
+    greet.apply(employee, ["Apply"]);
+    // employee.greet();
+    const em = greet.bind(employee, "Bind");
+    em();
+</script>
